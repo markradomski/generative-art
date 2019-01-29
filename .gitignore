@@ -1,0 +1,9 @@
+bower_components
+node_modules
+*.log
+.DS_Store
+bundle.js
+tmp/
+*.mp4
+*.gif
+.notes
