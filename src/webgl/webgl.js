@@ -1,6 +1,8 @@
-const canvasSketch = require('canvas-sketch');
-const random = require('canvas-sketch-util/random');
-const palettes = require('nice-color-palettes');
+import canvasSketch from 'canvas-sketch';
+import random from 'canvas-sketch-util/random';
+import palettes from 'nice-color-palettes';
+import eases from 'eases';
+import BezierEasing from 'bezier-easing';
 
 // Ensure ThreeJS is in global scope for the 'examples/'
 global.THREE = require('three');
@@ -9,6 +11,9 @@ global.THREE = require('three');
 require('three/examples/js/controls/OrbitControls');
 
 const settings = {
+  dimensions: [512, 512],
+  fps: 24, // frame/sec
+  duration: 4,
   // Make the loop animated
   animate: true,
   // Get a WebGL canvas rather than 2D
@@ -54,6 +59,8 @@ const sketch = ({ context }) => {
   light.position.set(0, 0, 4);
   scene.add(light);
 
+  const easeFn = BezierEasing(0.67, 0.03, 0.29, 0.99);
+
   // draw each frame
   return {
     // Handle resize events here
@@ -84,7 +91,9 @@ const sketch = ({ context }) => {
       camera.updateProjectionMatrix();
     },
     // Update & render your scene here
-    render({ time }) {
+    render({ playhead }) {
+      const t = Math.sin(playhead * Math.PI); // seemless looping
+      scene.rotation.z = easeFn(t);
       renderer.render(scene, camera);
     },
     // Dispose of events & renderer for cleaner hot-reloading
