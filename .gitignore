@@ -4,6 +4,7 @@ node_modules
 .DS_Store
 bundle.js
 tmp/
+docs/
 *.mp4
 *.gif
 .notes
